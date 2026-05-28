@@ -83,7 +83,7 @@ export const SCENARIOS = {
         reasoning: '此疫情雖案例數不多 (12 例)，但已出現醫療場域 (nosocomial) 傳播是高度警訊——意味初次接觸時未被識別。歷史比對顯示 2007 年同地區 149 例疫情亦自醫療場域擴散。台灣雖無直飛，週均轉機旅客 25–30 人，需建立轉機過境監測。本案建議調升風險 +0.3。',
         adjustment: 0.3,
         confidence: 0.87,
-        model: 'Claude Sonnet (政府專屬雲)',
+        model: 'Claude Sonnet',
       },
       layer3: {
         finalScore: 4.4,
