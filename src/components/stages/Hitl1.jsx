@@ -60,6 +60,15 @@ export default function HITL1View({ scenario, decisions, onDecision }) {
           </div>
         </div>
 
+        {scenario.risk.layer2?.reasoning && (
+          <div className="mt-4">
+            <SectionLabel>AGENT 推理摘要</SectionLabel>
+            <div className="p-4 rounded-xl bg-blue-50 border border-blue-100 text-sm text-stone-700 leading-relaxed">
+              {scenario.risk.layer2.reasoning}
+            </div>
+          </div>
+        )}
+
         {/* Decision controls */}
         <div className="mt-4">
           <AnimatePresence mode="wait">
