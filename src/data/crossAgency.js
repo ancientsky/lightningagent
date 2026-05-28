@@ -23,20 +23,20 @@ export const HUB = HUBS.dengue_cluster;
 const ALL_AGENCIES = [
   {
     id: 'land',
-    ministry: '內政部 國土管理署',
-    unit: '空屋空地圖資',
-    role: '鎖定孳生源熱點、優先清除',
+    ministry: '財政部 國有財產署',
+    unit: '國有房地圖資',
+    role: '鎖定國有閒置房地孳生源、優先清除',
     icon: Map,
     tint: 'teal',
     protocol: 'MCP',
-    call: 'mcp.land.queryVacantLots({ area:"台南東區", radius_m:200 })',
+    call: 'mcp.npa.queryIdleNationalProperty({ area:"台南東區", radius_m:200 })',
     ackMs: 600,
     eta: '即時回傳圖資',
     result: {
       headline: '12 處孳生源熱點',
       fields: [
-        ['空屋', '7 處'],
-        ['空地 / 畸零地', '5 處'],
+        ['國有閒置房屋', '7 處'],
+        ['國有空地 / 畸零地', '5 處'],
         ['優先清除', '已依風險排序'],
       ],
     },
@@ -142,7 +142,7 @@ export const AGENCIES = ALL_AGENCIES;
 // LINE 即時通知 — 各部會「人」的窗口（可勾選誰要收到通知）。
 // A2A/MCP 是機器對機器，這一層是把同一則情資即時推給承辦窗口。
 export const LINE_CONTACTS = [
-  { id: 'land', ministry: '內政部 國土管理署', name: '王科長', role: '都市發展組', defaultOn: true },
+  { id: 'land', ministry: '財政部 國有財產署', name: '王科長', role: '國有房地管理組', defaultOn: true },
   { id: 'env', ministry: '環境部', name: '李視察', role: '病媒蚊防治科', defaultOn: true },
   { id: 'mnd', ministry: '國防部 化學兵群', name: '陳少校', role: '災防支援組', defaultOn: false },
   { id: 'trade', ministry: '經濟部 國際貿易署', name: '林專員', role: '輸入管理組', defaultOn: false },
@@ -169,12 +169,12 @@ export const OFFICIAL_DOC = {
     ['密等', '普通'],
     ['附件', '孳生源熱點清單、群聚個案地理分布圖'],
   ],
-  to: '受文者：內政部國土管理署、環境部、國防部、經濟部國際貿易署、臺南市政府',
+  to: '受文者：財政部國有財產署、環境部、國防部、經濟部國際貿易署、臺南市政府',
   subject: '主旨：為因應臺南市東區登革熱本土群聚疫情，請貴機關依權責協助跨機關應變事宜，請查照。',
   body: [
     '一、依傳染病防治法第 5 條及本署登革熱防治工作指引辦理。',
     '二、本署於 115 年 5 月 28 日確認臺南市東區登革熱本土群聚計 6 例（血清型 DENV-2），經三層風險研判為「高」風險，恐持續擴散。',
-    '三、檢附孳生源熱點清單，請各機關配合辦理：（一）國土管理署提供空屋空地圖資；（二）環境部規劃並執行戶外噴藥；（三）國防部派遣化學兵支援人力機具；（四）國際貿易署協助化學藥劑快速審批。',
+    '三、檢附孳生源熱點清單，請各機關配合辦理：（一）國有財產署提供國有閒置房地圖資；（二）環境部規劃並執行戶外噴藥；（三）國防部派遣化學兵支援人力機具；（四）國際貿易署協助化學藥劑快速審批。',
     '四、本案刻不容緩，相關協調同時透過 A2A / MCP 即時訊息流進行，本函為正式紀錄存查。',
   ],
   cc: '正本：如受文者；副本：本署疫情監測中心、臺南市政府衛生局',
