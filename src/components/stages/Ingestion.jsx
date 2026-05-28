@@ -11,7 +11,7 @@ import { INGESTION_AGENTS, INGESTION_AGENTS_DENGUE } from '../../data/ingestionA
 const SOURCES = [
   { name: 'beaconbio.org', highlight: true }, { name: 'WHO DON' }, { name: 'ECDC' },
   { name: 'US CDC HAN' }, { name: 'ProMED-mail' }, { name: 'Reuters Health' },
-  { name: 'PAHO' }, { name: 'NIDSS 法傳' },
+  { name: 'PAHO' }, { name: 'NIDSS 法傳' }, { name: '社群媒體情資' },
 ];
 
 function AgentDemo({ agent }) {
@@ -196,7 +196,7 @@ export default function IngestionView({ scenario }) {
             </div>
           ))}
         </div>
-        <div className="mt-3 text-xs text-stone-500">8 來源 · LIVE 串接 — 假訊息不只藏在文字裡，也在圖片、影音與跨國雜訊中。</div>
+        <div className="mt-3 text-xs text-stone-500">{SOURCES.length} 來源 · LIVE 串接 — 假訊息不只藏在文字裡，也在圖片、影音與跨國雜訊中。</div>
       </Card>
 
       <Card title="多模態擷取 — 四路 Agent 分頭擷取與查證" icon={Layers} accent="text-clay-500">
