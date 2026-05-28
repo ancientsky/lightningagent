@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  Languages, Tag, Hash, GitBranch, Layers, CheckCircle2, Link2, AlertCircle, Clock,
+  Languages, Tag, Hash, GitBranch, Layers, CheckCircle2, Link2, AlertCircle, Clock, Search,
 } from 'lucide-react';
 import { Card, Pill, SectionLabel, ConfidenceBar } from '../ui.jsx';
 
@@ -111,6 +111,30 @@ export default function PipelineView({ scenario }) {
           <Note icon={AlertCircle} tint="amber" text={scenario.dedup.escalationLink} title="溯源連結：漏網個案" />
         )}
       </Card>
+
+      {/* RAG context retrieval over historical reports */}
+      {scenario.rag && (
+        <Card title="情境檢索 (RAG over 歷年報告)" icon={Search} accent="text-purple-600">
+          <div className="space-y-2.5">
+            {[
+              ['歷史背景', scenario.rag.historical],
+              ['台灣連結', scenario.rag.taiwanLink],
+              ['SOP 參照', scenario.rag.sop],
+            ].map(([k, v], i) => (
+              <motion.div
+                key={k}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }}
+                className="p-3 rounded-xl bg-purple-50/60 border border-purple-100"
+              >
+                <div className="text-xs font-semibold text-purple-700 mb-1">{k}</div>
+                <div className="text-xs text-stone-700 leading-relaxed">{v}</div>
+              </motion.div>
+            ))}
+          </div>
+        </Card>
+      )}
     </div>
   );
 }
