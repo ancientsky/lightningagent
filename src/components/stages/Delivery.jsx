@@ -8,6 +8,7 @@ import { Card, Pill, ManualVsAuto } from '../ui.jsx';
 import { getPublishStatus } from '../../lib/ui.js';
 import AirportDashboard from '../AirportDashboard.jsx';
 import ExecutiveBriefing from '../ExecutiveBriefing.jsx';
+import PublicBroadcast from '../PublicBroadcast.jsx';
 
 const CHANNEL_META = {
   airport: { icon: Plane, label: '機場檢疫站', tint: 'teal' },
@@ -30,6 +31,7 @@ export default function DeliveryView({ scenario, hitl1Decisions, hitl2Decisions 
 
   const channels = Object.entries(scenario.delivery || {});
   const execStatus = getPublishStatus(scenario, 'executive', hitl1Decisions, hitl2Decisions);
+  const publicStatus = getPublishStatus(scenario, 'public', hitl1Decisions, hitl2Decisions);
 
   return (
     <div className="space-y-5">
@@ -77,6 +79,11 @@ export default function DeliveryView({ scenario, hitl1Decisions, hitl2Decisions 
       {/* Executive briefing mockup — lock-screen push + formal email */}
       {scenario.outputs?.executive && (
         <ExecutiveBriefing scenario={scenario} status={execStatus} />
+      )}
+
+      {/* Public broadcast mockup — 疾管家 LINE@ push + CDC website news */}
+      {scenario.outputs?.public && (
+        <PublicBroadcast scenario={scenario} status={publicStatus} />
       )}
 
       {/* Audit trail */}
