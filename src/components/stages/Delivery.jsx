@@ -7,6 +7,7 @@ import {
 import { Card, Pill, SectionLabel, ManualVsAuto } from '../ui.jsx';
 import { getPublishStatus } from '../../lib/ui.js';
 import { useClock } from '../../lib/hooks.js';
+import AirportDashboard from '../AirportDashboard.jsx';
 
 const CHANNEL_META = {
   airport: { icon: Plane, label: '機場檢疫站', tint: 'teal' },
@@ -18,7 +19,7 @@ const CHANNEL_META = {
 const tintPill = { teal: 'teal', blue: 'teal', amber: 'amber', purple: 'purple' };
 
 export default function DeliveryView({ scenario, hitl2Decisions }) {
-  const { timeStr, dateStr, weekday } = useClock();
+  const { timeStr, dateStr } = useClock();
   const [auditOpen, setAuditOpen] = useState(false);
 
   const channels = Object.entries(scenario.delivery || {});
@@ -81,54 +82,7 @@ export default function DeliveryView({ scenario, hitl2Decisions }) {
 
       {/* Airport dashboard mockup — only for scenarios with airport context
           (skipped for domestic clusters where the case already slipped the border) */}
-      {scenario.outputs?.airport && (
-        <Card title="機場檢疫站 · 即時儀表板" icon={Plane} accent="text-teal-600">
-        <div className="rounded-xl bg-stone-900 text-stone-100 overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-2.5 bg-stone-800 border-b border-stone-700">
-            <span className="text-xs font-mono text-teal-400 tracking-widest">OASIS · 機場疫情監控</span>
-            <span className="text-xs font-mono text-stone-400">{dateStr} 週{weekday} {timeStr}</span>
-          </div>
-          <div className="p-4 space-y-3">
-            {/* Active alert */}
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-900/40 border border-amber-700/60">
-              <span className="text-amber-400 text-lg">⚠</span>
-              <div>
-                <div className="text-xs font-semibold text-amber-300 mb-0.5">疫情警示 · {scenario.name}</div>
-                <div className="text-xs text-stone-300">{scenario.region} · {scenario.severityLabel}風險</div>
-              </div>
-              <Pill color="amber" size="xs">LIVE</Pill>
-            </div>
-            {/* Flight rows */}
-            {scenario.outputs?.airport?.flights?.length > 0 ? (
-              <div className="space-y-1.5">
-                <div className="text-[10px] text-stone-500 uppercase tracking-wider mb-1">關注航班</div>
-                {scenario.outputs.airport.flights.map((f, i) => (
-                  <div key={i} className="flex flex-wrap items-center gap-2 px-3 py-2 rounded-lg bg-stone-800/60 text-xs">
-                    <span className="font-mono text-teal-400">{f.code}</span>
-                    <span className="text-stone-300">{f.route}</span>
-                    <span className="text-stone-500">ETA {f.eta}</span>
-                    <span className="ml-auto text-amber-300 font-medium">{f.action}</span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-xs text-stone-500 italic px-1">無需特別關注的入境航班</div>
-            )}
-            {/* Symptoms */}
-            {scenario.outputs?.airport?.symptoms && (
-              <div>
-                <div className="text-[10px] text-stone-500 uppercase tracking-wider mb-1.5">症狀監測重點</div>
-                <div className="flex flex-wrap gap-1.5">
-                  {scenario.outputs.airport.symptoms.map((s, i) => (
-                    <span key={i} className="px-2 py-0.5 rounded-md bg-stone-700 text-stone-300 text-[11px]">{s}</span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        </Card>
-      )}
+      {scenario.outputs?.airport && <AirportDashboard scenario={scenario} />}
 
       {/* Executive email mockup */}
       {scenario.outputs?.executive && (

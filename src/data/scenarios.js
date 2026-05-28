@@ -117,6 +117,7 @@ export const SCENARIOS = {
       airport: {
         title: '⚠ 新增關注：Ebola BDBV · 烏干達',
         priority: 'critical',
+        notifyClass: '第五類傳染病 · 即時通報',
         flights: [
           { code: 'EK367+CI105', route: '杜拜→桃園 (轉機自烏干達)', eta: '21:30 抵達', action: '轉機過境強化篩查' },
           { code: 'KL841+CI100', route: '阿姆斯特丹→桃園', eta: '次日 06:25', action: '醫療轉機行政檢核' },
