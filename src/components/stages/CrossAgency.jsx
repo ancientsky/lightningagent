@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { Card, Pill, SectionLabel, ManualVsAuto } from '../ui.jsx';
 import {
-  HUB, AGENCIES, FLOW_COMPARE, LINE_CONTACTS, LINE_MESSAGE, OFFICIAL_DOC,
+  HUBS, HUB, getAgencies, FLOW_COMPARE, LINE_CONTACTS, LINE_MESSAGE, OFFICIAL_DOC,
 } from '../../data/crossAgency.js';
 
 // Colors per tint
@@ -263,7 +263,9 @@ export default function CrossAgencyView({ scenario }) {
   const [dispatched, setDispatched] = useState(false);
   const [dispatchedAgents, setDispatchedAgents] = useState({});
 
-  const isCrossAgency = !!scenario.crossAgency;
+  const agencies = getAgencies(scenario.id);
+  const hub = HUBS[scenario.id] || HUB;
+  const isClusterResponse = !!scenario.cluster; // dengue domestic cluster toolkit
 
   function handleDispatch() {
     setRunKey((k) => k + 1);
@@ -271,7 +273,7 @@ export default function CrossAgencyView({ scenario }) {
     setDispatchedAgents({});
     setTimeout(() => {
       setDispatched(true);
-      AGENCIES.forEach((ag) => {
+      agencies.forEach((ag) => {
         setTimeout(() => {
           setDispatchedAgents((prev) => ({ ...prev, [ag.id]: true }));
         }, ag.ackMs - 200);
@@ -279,7 +281,7 @@ export default function CrossAgencyView({ scenario }) {
     }, 600);
   }
 
-  if (!isCrossAgency) {
+  if (agencies.length === 0) {
     return (
       <div className="space-y-5">
         <Card title="⑧ 跨部會 A2A / MCP 協作" icon={GitBranch} accent="text-stone-500">
@@ -287,7 +289,7 @@ export default function CrossAgencyView({ scenario }) {
             <GitBranch className="w-5 h-5 text-stone-400 shrink-0 mt-0.5" />
             <div>
               <div className="text-sm font-medium text-stone-600 mb-1">本情境無跨部會應變需求</div>
-              <div className="text-xs text-stone-500">跨部會 A2A / MCP 協調僅在本土群聚疫情（如：登革熱本土群聚）時啟動。請切換至「登革熱本土群聚」情境以體驗完整流程。</div>
+              <div className="text-xs text-stone-500">跨部會 A2A / MCP 協調目前在「登革熱本土群聚」（國內病媒防治）與「Ebola BDBV」（外交部旅遊警示）情境中啟動。請切換情境以體驗。</div>
             </div>
           </div>
         </Card>
@@ -324,7 +326,7 @@ export default function CrossAgencyView({ scenario }) {
 
       {/* Hub + dispatch */}
       <Card title="⑧ 跨部會 A2A / MCP 協調中樞" icon={GitBranch} accent="text-clay-500">
-        <p className="text-xs text-stone-500 mb-4">群聚情資 Agent 作為協調中樞，以 A2A / MCP 即時派送任務給五個部會 — 取代傳統紙本公文往返。</p>
+        <p className="text-xs text-stone-500 mb-4">{hub.name}作為協調中樞，以 A2A / MCP 即時派送任務給 {agencies.length} 個部會 — 取代傳統紙本公文往返。</p>
 
         {/* Hub card */}
         <div className="flex items-center gap-3 p-3.5 rounded-xl bg-clay-50/80 border border-clay-200 mb-4">
@@ -332,8 +334,8 @@ export default function CrossAgencyView({ scenario }) {
             <GitBranch className="w-5 h-5 text-clay-700" />
           </div>
           <div className="flex-1">
-            <div className="text-sm font-semibold text-clay-900">{HUB.name}</div>
-            <div className="text-xs text-clay-700">{HUB.org} · {HUB.role}</div>
+            <div className="text-sm font-semibold text-clay-900">{hub.name}</div>
+            <div className="text-xs text-clay-700">{hub.org} · {hub.role}</div>
           </div>
           <button
             onClick={handleDispatch}
@@ -357,8 +359,8 @@ export default function CrossAgencyView({ scenario }) {
         )}
 
         {/* Ministry consoles */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {AGENCIES.map((ag) => (
+        <div className={`grid gap-3 ${agencies.length === 1 ? 'grid-cols-1 sm:max-w-md' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`}>
+          {agencies.map((ag) => (
             <AgencyConsole
               key={ag.id}
               agency={ag}
@@ -369,45 +371,50 @@ export default function CrossAgencyView({ scenario }) {
         </div>
 
         <ManualVsAuto
-          manual={FLOW_COMPARE.before.points.join('；')}
-          auto={FLOW_COMPARE.after.points.join('；')}
-          savings={`跨部會協調從 ${FLOW_COMPARE.before.metric} 壓縮至 ${FLOW_COMPARE.after.metric}`}
+          manual="跨機關協調靠公文往返與電話接力，動輒數日、資訊重複轉述易出錯"
+          auto="疫情資訊一產生，即時以 A2A / MCP 推送給該知道的部會、機器對機器交換"
+          savings="跨部會協調從數天壓縮至即時"
         />
       </Card>
 
-      {/* POC: LINE notification to ministry contacts */}
-      <LineNotify />
+      {/* Dengue cluster domestic-response toolkit (LINE + 公文 + 對照) */}
+      {isClusterResponse && (
+        <>
+          {/* POC: LINE notification to ministry contacts */}
+          <LineNotify />
 
-      {/* POC: auto-generated official document */}
-      <AutoDoc />
+          {/* POC: auto-generated official document */}
+          <AutoDoc />
 
-      {/* Before vs after comparison */}
-      <Card title="公文旅行 vs 即時訊息流" icon={ArrowRight} accent="text-stone-500">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-4 rounded-xl bg-rose-50 border border-rose-200">
-            <div className="text-sm font-semibold text-rose-800 mb-3">{FLOW_COMPARE.before.title}</div>
-            <ul className="space-y-2">
-              {FLOW_COMPARE.before.points.map((pt, i) => (
-                <li key={i} className="text-xs text-rose-800 flex items-start gap-2">
-                  <span className="text-rose-400 shrink-0 mt-0.5">✗</span>{pt}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-3 text-center text-2xl font-serif font-semibold text-rose-700">{FLOW_COMPARE.before.metric}</div>
-          </div>
-          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
-            <div className="text-sm font-semibold text-emerald-800 mb-3">{FLOW_COMPARE.after.title}</div>
-            <ul className="space-y-2">
-              {FLOW_COMPARE.after.points.map((pt, i) => (
-                <li key={i} className="text-xs text-emerald-800 flex items-start gap-2">
-                  <span className="text-emerald-500 shrink-0 mt-0.5">✓</span>{pt}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-3 text-center text-2xl font-serif font-semibold text-emerald-700">{FLOW_COMPARE.after.metric}</div>
-          </div>
-        </div>
-      </Card>
+          {/* Before vs after comparison */}
+          <Card title="公文旅行 vs 即時訊息流" icon={ArrowRight} accent="text-stone-500">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                <div className="text-sm font-semibold text-rose-800 mb-3">{FLOW_COMPARE.before.title}</div>
+                <ul className="space-y-2">
+                  {FLOW_COMPARE.before.points.map((pt, i) => (
+                    <li key={i} className="text-xs text-rose-800 flex items-start gap-2">
+                      <span className="text-rose-400 shrink-0 mt-0.5">✗</span>{pt}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-3 text-center text-2xl font-serif font-semibold text-rose-700">{FLOW_COMPARE.before.metric}</div>
+              </div>
+              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                <div className="text-sm font-semibold text-emerald-800 mb-3">{FLOW_COMPARE.after.title}</div>
+                <ul className="space-y-2">
+                  {FLOW_COMPARE.after.points.map((pt, i) => (
+                    <li key={i} className="text-xs text-emerald-800 flex items-start gap-2">
+                      <span className="text-emerald-500 shrink-0 mt-0.5">✓</span>{pt}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-3 text-center text-2xl font-serif font-semibold text-emerald-700">{FLOW_COMPARE.after.metric}</div>
+              </div>
+            </div>
+          </Card>
+        </>
+      )}
     </div>
   );
 }

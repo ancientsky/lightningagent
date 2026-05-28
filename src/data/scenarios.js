@@ -15,6 +15,7 @@ export const SCENARIOS = {
     severityLabel: '危急',
     colorClass: 'red',
     tagline: '高致死率亞型，醫療場域擴散',
+    crossAgency: true,
     raw: {
       title: 'Uganda Ministry of Health confirms 12 cases of Ebola Bundibugyo virus in Kasese district',
       source: 'beaconbio.org',

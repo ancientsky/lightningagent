@@ -1,16 +1,26 @@
 import { Map, SprayCan, Shield, PackageCheck, Globe2 } from 'lucide-react';
 
-// Cross-agency A2A/MCP orchestration (OASIS proposal slide 9). The cluster
-// intelligence agent acts as a hub, dispatching machine-to-machine tasks to
-// five ministries — compressing "公文旅行" into an instant message flow.
-export const HUB = {
-  name: '群聚情資 Agent',
-  org: '疾管署',
-  role: '協調中樞 · 即時派送',
-  desc: '以 A2A（agent-to-agent）或 MCP 介接五個部會，把跨機關協調從紙本簽核變成即時訊息流。',
+// Cross-agency A2A/MCP orchestration (OASIS proposal slide 9). A coordinating
+// agent acts as a hub, dispatching machine-to-machine tasks to the relevant
+// ministries — compressing "公文旅行" into an instant message flow. Which
+// ministries are involved depends on the scenario.
+export const HUBS = {
+  dengue_cluster: {
+    name: '群聚情資 Agent',
+    org: '疾管署',
+    role: '協調中樞 · 即時派送',
+    desc: '以 A2A / MCP 介接相關部會，把跨機關協調從紙本簽核變成即時訊息流。',
+  },
+  ebola_bundibugyo: {
+    name: '國際疫情情資 Agent',
+    org: '疾管署',
+    role: '協調中樞 · 跨機關通報',
+    desc: '高致死率境外移入威脅，即時以 A2A 通報外交部調升疫區旅遊警示燈號。',
+  },
 };
+export const HUB = HUBS.dengue_cluster;
 
-export const AGENCIES = [
+const ALL_AGENCIES = [
   {
     id: 'land',
     ministry: '內政部 國土管理署',
@@ -99,19 +109,35 @@ export const AGENCIES = [
     icon: Globe2,
     tint: 'rose',
     protocol: 'A2A',
-    call: 'a2a.mofa.setTravelAdvisory({ region:"Tainan", level:"orange" })',
-    ackMs: 2300,
+    call: 'a2a.mofa.setTravelAdvisory({ region:"Uganda", level:"red" })',
+    ackMs: 1400,
     eta: '同步更新官網',
     result: {
       headline: '旅遊警示已調升',
       fields: [
-        ['燈號', '黃 → 橙'],
-        ['範圍', '台南市東區'],
+        ['燈號', '橙 → 紅'],
+        ['範圍', '烏干達 Kasese 區'],
         ['同步', '官網 / 領務系統'],
       ],
     },
   },
 ];
+
+// Which ministries each scenario dispatches to. Travel-advisory (外交部) belongs
+// with the international Ebola threat; the domestic dengue cluster mobilises the
+// four local ministries for vector control.
+export const SCENARIO_AGENCIES = {
+  dengue_cluster: ['land', 'env', 'mnd', 'trade'],
+  ebola_bundibugyo: ['mofa'],
+};
+
+export function getAgencies(scenarioId) {
+  return (SCENARIO_AGENCIES[scenarioId] || [])
+    .map((id) => ALL_AGENCIES.find((a) => a.id === id))
+    .filter(Boolean);
+}
+
+export const AGENCIES = ALL_AGENCIES;
 
 // LINE 即時通知 — 各部會「人」的窗口（可勾選誰要收到通知）。
 // A2A/MCP 是機器對機器，這一層是把同一則情資即時推給承辦窗口。
@@ -120,7 +146,6 @@ export const LINE_CONTACTS = [
   { id: 'env', ministry: '環境部', name: '李視察', role: '病媒蚊防治科', defaultOn: true },
   { id: 'mnd', ministry: '國防部 化學兵群', name: '陳少校', role: '災防支援組', defaultOn: false },
   { id: 'trade', ministry: '經濟部 國際貿易署', name: '林專員', role: '輸入管理組', defaultOn: false },
-  { id: 'mofa', ministry: '外交部', name: '張秘書', role: '領事事務局', defaultOn: false },
   { id: 'local', ministry: '臺南市政府 衛生局', name: '黃局長', role: '疾病管制科', defaultOn: true },
 ];
 
@@ -144,12 +169,12 @@ export const OFFICIAL_DOC = {
     ['密等', '普通'],
     ['附件', '孳生源熱點清單、群聚個案地理分布圖'],
   ],
-  to: '受文者：內政部國土管理署、環境部、國防部、經濟部國際貿易署、外交部、臺南市政府',
+  to: '受文者：內政部國土管理署、環境部、國防部、經濟部國際貿易署、臺南市政府',
   subject: '主旨：為因應臺南市東區登革熱本土群聚疫情，請貴機關依權責協助跨機關應變事宜，請查照。',
   body: [
     '一、依傳染病防治法第 5 條及本署登革熱防治工作指引辦理。',
     '二、本署於 115 年 5 月 28 日確認臺南市東區登革熱本土群聚計 6 例（血清型 DENV-2），經三層風險研判為「高」風險，恐持續擴散。',
-    '三、檢附孳生源熱點清單，請各機關配合辦理：（一）國土管理署提供空屋空地圖資；（二）環境部規劃並執行戶外噴藥；（三）國防部派遣化學兵支援人力機具；（四）國際貿易署協助化學藥劑快速審批；（五）外交部評估調升旅遊警示燈號。',
+    '三、檢附孳生源熱點清單，請各機關配合辦理：（一）國土管理署提供空屋空地圖資；（二）環境部規劃並執行戶外噴藥；（三）國防部派遣化學兵支援人力機具；（四）國際貿易署協助化學藥劑快速審批。',
     '四、本案刻不容緩，相關協調同時透過 A2A / MCP 即時訊息流進行，本函為正式紀錄存查。',
   ],
   cc: '正本：如受文者；副本：本署疫情監測中心、臺南市政府衛生局',
