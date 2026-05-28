@@ -146,6 +146,7 @@ export const SCENARIOS = {
           { q: '是否發布新聞稿？', rec: '今日 16:00 前', risk: '不發布風險：被質疑資訊不透明' },
         ],
         deadline: '今日 16:00 前決定方向',
+        sopDoc: '第五類傳染病 SOP.pdf',
       },
       public: {
         title: '【國際疫情通報】烏干達伊波拉疫情更新',

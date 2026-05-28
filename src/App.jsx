@@ -235,6 +235,7 @@ export default function App() {
                 {stageId === 'delivery' && (
                   <DeliveryView
                     scenario={scenario}
+                    hitl1Decisions={hitl1Decisions}
                     hitl2Decisions={hitl2Decisions}
                   />
                 )}

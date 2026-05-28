@@ -4,10 +4,10 @@ import {
   Send, Plane, Briefcase, Mail, Megaphone, CheckCircle2, Clock,
   Shield, FileText, ChevronDown, ChevronUp,
 } from 'lucide-react';
-import { Card, Pill, SectionLabel, ManualVsAuto } from '../ui.jsx';
+import { Card, Pill, ManualVsAuto } from '../ui.jsx';
 import { getPublishStatus } from '../../lib/ui.js';
-import { useClock } from '../../lib/hooks.js';
 import AirportDashboard from '../AirportDashboard.jsx';
+import ExecutiveBriefing from '../ExecutiveBriefing.jsx';
 
 const CHANNEL_META = {
   airport: { icon: Plane, label: '機場檢疫站', tint: 'teal' },
@@ -16,14 +16,20 @@ const CHANNEL_META = {
   public: { icon: Megaphone, label: '官網 + 媒體', tint: 'purple' },
 };
 
-const tintPill = { teal: 'teal', blue: 'teal', amber: 'amber', purple: 'purple' };
+// Map the publish-status string from getPublishStatus() to card styling.
+const STATUS_PILL = {
+  published: { tone: 'green', label: '已發布', card: 'bg-emerald-50 border-emerald-200', icon: 'text-emerald-600' },
+  awaiting_hitl1: { tone: 'amber', label: '待 HITL①', card: 'bg-amber-50 border-amber-200', icon: 'text-amber-600' },
+  awaiting_hitl2: { tone: 'amber', label: '待 HITL②', card: 'bg-amber-50 border-amber-200', icon: 'text-amber-600' },
+  revising: { tone: 'amber', label: '退回修改', card: 'bg-amber-50 border-amber-200', icon: 'text-amber-600' },
+  rejected: { tone: 'red', label: '已拒絕', card: 'bg-rose-50 border-rose-200', icon: 'text-rose-500' },
+};
 
-export default function DeliveryView({ scenario, hitl2Decisions }) {
-  const { timeStr, dateStr } = useClock();
+export default function DeliveryView({ scenario, hitl1Decisions, hitl2Decisions }) {
   const [auditOpen, setAuditOpen] = useState(false);
 
   const channels = Object.entries(scenario.delivery || {});
-  const { hitl2 } = scenario;
+  const execStatus = getPublishStatus(scenario, 'executive', hitl1Decisions, hitl2Decisions);
 
   return (
     <div className="space-y-5">
@@ -35,10 +41,8 @@ export default function DeliveryView({ scenario, hitl2Decisions }) {
             const meta = CHANNEL_META[audience];
             if (!meta) return null;
             const Icon = meta.icon;
-            const gate = hitl2?.[audience];
-            const key = `${scenario.id}_${audience}`;
-            const decided = hitl2Decisions?.[key];
-            const status = getPublishStatus(gate, decided);
+            const status = getPublishStatus(scenario, audience, hitl1Decisions, hitl2Decisions);
+            const st = STATUS_PILL[status] || STATUS_PILL.published;
 
             return (
               <motion.div
@@ -46,28 +50,14 @@ export default function DeliveryView({ scenario, hitl2Decisions }) {
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.08 }}
-                className={`flex items-center gap-3 p-3 rounded-xl border ${
-                  status.type === 'published' ? 'bg-emerald-50 border-emerald-200' :
-                  status.type === 'pending' ? 'bg-amber-50 border-amber-200' :
-                  status.type === 'rejected' ? 'bg-rose-50 border-rose-200' :
-                  'bg-paper-50 border-paper-300'
-                }`}
+                className={`flex items-center gap-3 p-3 rounded-xl border ${st.card}`}
               >
-                <Icon className={`w-5 h-5 shrink-0 ${
-                  status.type === 'published' ? 'text-emerald-600' :
-                  status.type === 'pending' ? 'text-amber-600' :
-                  status.type === 'rejected' ? 'text-rose-500' :
-                  'text-stone-400'
-                }`} />
+                <Icon className={`w-5 h-5 shrink-0 ${st.icon}`} />
                 <div className="flex-1">
                   <div className="text-sm font-medium text-stone-800">{meta.label}</div>
                   <div className="text-xs text-stone-500">{ch.channel}</div>
                 </div>
-                <Pill color={
-                  status.type === 'published' ? 'green' :
-                  status.type === 'pending' ? 'amber' :
-                  status.type === 'rejected' ? 'red' : 'stone'
-                }>{status.label}</Pill>
+                <Pill color={st.tone}>{st.label}</Pill>
               </motion.div>
             );
           })}
@@ -84,32 +74,9 @@ export default function DeliveryView({ scenario, hitl2Decisions }) {
           (skipped for domestic clusters where the case already slipped the border) */}
       {scenario.outputs?.airport && <AirportDashboard scenario={scenario} />}
 
-      {/* Executive email mockup */}
+      {/* Executive briefing mockup — lock-screen push + formal email */}
       {scenario.outputs?.executive && (
-        <Card title="長官通知 · Email 摘要" icon={Mail} accent="text-amber-600">
-          <div className="rounded-xl border border-paper-300 overflow-hidden text-xs">
-            <div className="px-4 py-3 bg-paper-50 border-b border-paper-300 space-y-1">
-              <div className="flex gap-2 text-stone-500"><span className="w-8 shrink-0">寄件</span><span className="text-stone-700">oasis-agent@cdc.gov.tw (OASIS 系統)</span></div>
-              <div className="flex gap-2 text-stone-500"><span className="w-8 shrink-0">主旨</span><span className="text-stone-800 font-medium">{scenario.outputs.executive.title}</span></div>
-              <div className="flex gap-2 text-stone-500"><span className="w-8 shrink-0">時間</span><span>{dateStr} {timeStr}</span></div>
-            </div>
-            <div className="p-4 space-y-3">
-              <div className="p-3 rounded-lg bg-amber-50 border border-amber-100 text-stone-700 leading-relaxed">
-                {scenario.outputs.executive.summary}
-              </div>
-              {scenario.outputs.executive.decisions?.length > 0 && (
-                <div className="space-y-2">
-                  {scenario.outputs.executive.decisions.slice(0, 2).map((d, i) => (
-                    <div key={i} className="p-2.5 rounded-lg bg-paper-50 border border-paper-300">
-                      <div className="font-medium text-stone-800 mb-1">{d.q}</div>
-                      <div className="text-emerald-700">建議：{d.rec}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </Card>
+        <ExecutiveBriefing scenario={scenario} status={execStatus} />
       )}
 
       {/* Audit trail */}
