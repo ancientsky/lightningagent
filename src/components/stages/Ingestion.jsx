@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { Card, Pill, SectionLabel, ConfidenceBar, AgentThinking } from '../ui.jsx';
 import { tintMap } from '../../lib/ui.js';
-import { INGESTION_AGENTS } from '../../data/ingestionAgents.js';
+import { INGESTION_AGENTS, INGESTION_AGENTS_DENGUE } from '../../data/ingestionAgents.js';
 
 const SOURCES = [
   { name: 'beaconbio.org', highlight: true }, { name: 'WHO DON' }, { name: 'ECDC' },
@@ -177,9 +177,10 @@ function InputBlock({ agent, tint }) {
   );
 }
 
-export default function IngestionView() {
+export default function IngestionView({ scenario }) {
   const [active, setActive] = useState('web');
-  const agent = INGESTION_AGENTS.find((a) => a.id === active);
+  const agents = scenario?.id === 'dengue_cluster' ? INGESTION_AGENTS_DENGUE : INGESTION_AGENTS;
+  const agent = agents.find((a) => a.id === active);
 
   return (
     <div className="space-y-5">
@@ -200,7 +201,7 @@ export default function IngestionView() {
 
       <Card title="多模態擷取 — 四路 Agent 分頭擷取與查證" icon={Layers} accent="text-clay-500">
         <div className="flex flex-wrap gap-2 mb-4">
-          {INGESTION_AGENTS.map((a) => {
+          {agents.map((a) => {
             const t = tintMap[a.tint];
             const on = a.id === active;
             const Icon = a.icon;
