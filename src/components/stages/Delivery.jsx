@@ -79,8 +79,10 @@ export default function DeliveryView({ scenario, hitl2Decisions }) {
         />
       </Card>
 
-      {/* Airport dashboard mockup */}
-      <Card title="機場檢疫站 · 即時儀表板" icon={Plane} accent="text-teal-600">
+      {/* Airport dashboard mockup — only for scenarios with airport context
+          (skipped for domestic clusters where the case already slipped the border) */}
+      {scenario.outputs?.airport && (
+        <Card title="機場檢疫站 · 即時儀表板" icon={Plane} accent="text-teal-600">
         <div className="rounded-xl bg-stone-900 text-stone-100 overflow-hidden">
           <div className="flex items-center justify-between px-4 py-2.5 bg-stone-800 border-b border-stone-700">
             <span className="text-xs font-mono text-teal-400 tracking-widest">OASIS · 機場疫情監控</span>
@@ -125,7 +127,8 @@ export default function DeliveryView({ scenario, hitl2Decisions }) {
             )}
           </div>
         </div>
-      </Card>
+        </Card>
+      )}
 
       {/* Executive email mockup */}
       {scenario.outputs?.executive && (
