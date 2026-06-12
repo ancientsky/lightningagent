@@ -102,7 +102,7 @@ export default function App() {
               <Zap className="w-4 h-4 text-white" />
             </div>
             <div>
-              <div className="text-sm font-semibold text-stone-900 leading-none">第6組</div>
+              <div className="text-sm font-semibold text-stone-900 leading-none">OASIS</div>
               <div className="text-[10px] text-stone-400 leading-none mt-0.5">國際疫情情資 Multi-Agent</div>
             </div>
           </div>
