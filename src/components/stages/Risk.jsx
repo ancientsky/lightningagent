@@ -28,7 +28,7 @@ export default function RiskView({ scenario }) {
               <div className="w-24 sm:w-28 text-xs text-stone-600 shrink-0">{comp.name}</div>
               <div className="flex-1 h-5 bg-stone-100 rounded-lg overflow-hidden relative">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-teal-400 to-teal-600 rounded-lg"
+                  className="h-full bg-linear-to-r from-teal-400 to-teal-600 rounded-lg"
                   initial={{ width: 0 }}
                   animate={{ width: `${(comp.value / 5) * 100}%` }}
                   transition={{ duration: 0.7, delay: i * 0.08, ease: 'easeOut' }}

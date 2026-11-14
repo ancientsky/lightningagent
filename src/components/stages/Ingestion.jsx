@@ -99,7 +99,7 @@ function AgentDemo({ agent }) {
           ) : (
             <motion.div key="wait" className="rounded-xl border border-paper-300 p-4 space-y-2">
               {[0, 1, 2, 3].map((i) => (
-                <div key={i} className="h-4 rounded skeleton-shimmer" style={{ width: `${90 - i * 12}%` }} />
+                <div key={i} className="h-4 rounded-sm skeleton-shimmer" style={{ width: `${90 - i * 12}%` }} />
               ))}
             </motion.div>
           )}
@@ -117,12 +117,12 @@ function InputBlock({ agent, tint }) {
         <div className="bg-stone-800 text-stone-300 text-[10px] px-3 py-1.5 flex items-center gap-1.5">
           <ImageIcon className="w-3 h-3" /> 輸入影像
         </div>
-        <div className="p-3 bg-gradient-to-br from-stone-100 to-stone-200">
+        <div className="p-3 bg-linear-to-br from-stone-100 to-stone-200">
           <div className="rounded-lg bg-white border border-stone-300 p-3 text-[11px] text-stone-600 font-mono leading-relaxed">
             {d.input}
           </div>
           <div className="mt-2 text-[10px] text-stone-500">OCR 還原：</div>
-          <pre className="mt-1 text-[10px] text-stone-700 whitespace-pre-wrap font-mono bg-white/70 rounded p-2 border border-stone-200">{d.ocrRaw}</pre>
+          <pre className="mt-1 text-[10px] text-stone-700 whitespace-pre-wrap font-mono bg-white/70 rounded-sm p-2 border border-stone-200">{d.ocrRaw}</pre>
         </div>
       </div>
     );
@@ -135,11 +135,11 @@ function InputBlock({ agent, tint }) {
         </div>
         <div className="p-3">
           <div className="relative rounded-lg bg-stone-900 text-stone-100 text-[11px] p-3 mb-2">
-            <span className="absolute top-2 right-2 text-[9px] bg-rose-500 px-1.5 py-0.5 rounded">● 瘋傳</span>
+            <span className="absolute top-2 right-2 text-[9px] bg-rose-500 px-1.5 py-0.5 rounded-sm">● 瘋傳</span>
             {d.input}
           </div>
           <div className="text-[10px] text-stone-500 mb-1">自動轉錄：</div>
-          <div className="text-[11px] text-stone-700 italic bg-paper-100 rounded p-2 border border-paper-300">「{d.transcript}」</div>
+          <div className="text-[11px] text-stone-700 italic bg-paper-100 rounded-sm p-2 border border-paper-300">「{d.transcript}」</div>
         </div>
       </div>
     );

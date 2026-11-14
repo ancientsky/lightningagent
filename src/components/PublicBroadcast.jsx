@@ -43,15 +43,15 @@ export default function PublicBroadcast({ scenario, status }) {
           <div className="flex items-center gap-1.5 text-[11px] text-stone-500 mb-2">
             <MessageCircle className="w-3.5 h-3.5" />疾管家 LINE@ 推播 · <span className="text-[#06C755] font-medium">官方帳號</span>
           </div>
-          <div className="mx-auto max-w-[280px] rounded-[2rem] bg-stone-900 border-[6px] border-stone-800 shadow-lift overflow-hidden">
+          <div className="mx-auto max-w-[280px] rounded-4xl bg-stone-900 border-[6px] border-stone-800 shadow-lift overflow-hidden">
             <div className="flex items-center justify-between px-5 pt-3 pb-1 text-[10px] text-stone-300 font-mono bg-white">
               <span className="text-stone-700">{hmStr}</span>
               <span className="flex items-center gap-1 text-stone-700">
                 <span className="flex gap-0.5 items-end">
-                  {[2, 3, 4, 5].map((h) => <span key={h} className="w-0.5 bg-stone-600 rounded-sm" style={{ height: h }} />)}
+                  {[2, 3, 4, 5].map((h) => <span key={h} className="w-0.5 bg-stone-600 rounded-xs" style={{ height: h }} />)}
                 </span>
                 5G
-                <span className="ml-1 inline-block w-4 h-2 border border-stone-500 rounded-sm relative"><span className="absolute inset-0.5 bg-stone-600 rounded-[1px]" /></span>
+                <span className="ml-1 inline-block w-4 h-2 border border-stone-500 rounded-xs relative"><span className="absolute inset-0.5 bg-stone-600 rounded-[1px]" /></span>
               </span>
             </div>
             {/* LINE chat header */}
@@ -68,13 +68,13 @@ export default function PublicBroadcast({ scenario, status }) {
             <div className="px-3 py-4 bg-[#9bbbd4] min-h-[280px] space-y-1.5">
               <div className="text-center text-[10px] text-white/90 mb-2">今天 {hmStr}</div>
               <div className="max-w-[88%]">
-                <div className="rounded-2xl rounded-tl-md bg-white p-3 text-xs text-stone-700 leading-relaxed shadow-sm">
+                <div className="rounded-2xl rounded-tl-md bg-white p-3 text-xs text-stone-700 leading-relaxed shadow-xs">
                   {sms}
                 </div>
                 <div className="flex items-center gap-1 mt-1 text-[10px] text-white/90">
                   <span>{[...sms].length} 字</span><span>·</span><span>已讀 {hmStr}</span>
                 </div>
-                <button type="button" className="mt-2 w-full py-2 rounded-xl bg-white text-[#06A24A] text-xs font-medium shadow-sm hover:bg-stone-50 transition flex items-center justify-center gap-1.5">
+                <button type="button" className="mt-2 w-full py-2 rounded-xl bg-white text-[#06A24A] text-xs font-medium shadow-xs hover:bg-stone-50 transition flex items-center justify-center gap-1.5">
                   <Globe className="w-3.5 h-3.5" />查看完整通報
                 </button>
               </div>
@@ -104,7 +104,7 @@ export default function PublicBroadcast({ scenario, status }) {
             </div>
             {/* CDC header */}
             <div className="px-4 py-3 flex items-center gap-2 border-b border-paper-200">
-              <div className="px-1.5 py-1 rounded bg-teal-700 text-white text-[10px] font-bold tracking-wide">CDC</div>
+              <div className="px-1.5 py-1 rounded-sm bg-teal-700 text-white text-[10px] font-bold tracking-wide">CDC</div>
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-semibold text-teal-800 leading-tight">衛生福利部 疾病管制署</div>
                 <div className="text-[9px] text-stone-400 leading-tight">Taiwan Centers for Disease Control</div>
@@ -117,8 +117,8 @@ export default function PublicBroadcast({ scenario, status }) {
             <div className="px-4 py-3">
               <div className="text-[10px] text-stone-400 mb-2 truncate">首頁 › 國際疫情通報 › {p.title}</div>
               <div className="flex items-center gap-1.5 mb-2">
-                <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 text-[10px]">{bracketTag}</span>
-                <span className="px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 text-[10px]">{secondTag}</span>
+                <span className="px-1.5 py-0.5 rounded-sm bg-emerald-100 text-emerald-700 text-[10px]">{bracketTag}</span>
+                <span className="px-1.5 py-0.5 rounded-sm bg-rose-100 text-rose-700 text-[10px]">{secondTag}</span>
               </div>
               <h4 className="text-base font-semibold text-stone-900 font-serif mb-2 leading-snug">{p.title}</h4>
               <div className="text-[10px] text-stone-400 mb-3 pb-3 border-b border-paper-200">
@@ -138,10 +138,10 @@ export default function PublicBroadcast({ scenario, status }) {
               {/* share row */}
               <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-paper-200">
                 <span className="text-[11px] text-stone-400">分享：</span>
-                <span className="px-2 py-1 rounded bg-emerald-50 text-emerald-700 text-[11px]">LINE</span>
-                <span className="px-2 py-1 rounded bg-blue-50 text-blue-700 text-[11px]">Facebook</span>
-                <span className="px-2 py-1 rounded bg-paper-100 text-stone-600 text-[11px]">Email</span>
-                <span className="px-2 py-1 rounded bg-paper-100 text-stone-600 text-[11px] flex items-center gap-1"><Printer className="w-3 h-3" />列印</span>
+                <span className="px-2 py-1 rounded-sm bg-emerald-50 text-emerald-700 text-[11px]">LINE</span>
+                <span className="px-2 py-1 rounded-sm bg-blue-50 text-blue-700 text-[11px]">Facebook</span>
+                <span className="px-2 py-1 rounded-sm bg-paper-100 text-stone-600 text-[11px]">Email</span>
+                <span className="px-2 py-1 rounded-sm bg-paper-100 text-stone-600 text-[11px] flex items-center gap-1"><Printer className="w-3 h-3" />列印</span>
                 <span className="ml-auto text-[10px] text-stone-400">資料維護：疫情監測科 · 撥打 1922</span>
               </div>
             </div>
