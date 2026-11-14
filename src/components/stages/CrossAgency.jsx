@@ -68,7 +68,7 @@ function AgencyConsole({ agency, dispatched, runKey }) {
               <CheckCircle2 className="w-3.5 h-3.5" />{agency.result.headline}
             </div>
             {agency.result.fields.map(([k, v], i) => (
-              <div key={i} className="flex justify-between text-[11px] px-2 py-1 rounded bg-white/60 border border-white/80">
+              <div key={i} className="flex justify-between text-[11px] px-2 py-1 rounded-sm bg-white/60 border border-white/80">
                 <span className="text-stone-500">{k}</span>
                 <span className="text-stone-800 font-medium">{v}</span>
               </div>
@@ -158,7 +158,7 @@ function LineNotify() {
               <>
                 {/* Outgoing bubble */}
                 <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex justify-end">
-                  <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-[#9ee07a] px-3 py-2 text-[11px] text-stone-800 leading-relaxed shadow-sm">
+                  <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-[#9ee07a] px-3 py-2 text-[11px] text-stone-800 leading-relaxed shadow-xs">
                     <div className="font-semibold mb-1">{LINE_MESSAGE.title}</div>
                     {LINE_MESSAGE.lines.map((l, i) => <div key={i}>{l}</div>)}
                     <div className="mt-1 text-[10px] text-stone-600/80">{LINE_MESSAGE.footer}</div>
