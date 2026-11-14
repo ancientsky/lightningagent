@@ -62,7 +62,7 @@ export default function AirportDashboard({ scenario }) {
       </div>
 
       {/* Alert banner */}
-      <div className="px-4 sm:px-5 py-4 border-b-2 border-rose-600/70 bg-gradient-to-r from-rose-950/80 via-rose-900/25 to-transparent">
+      <div className="px-4 sm:px-5 py-4 border-b-2 border-rose-600/70 bg-linear-to-r from-rose-950/80 via-rose-900/25 to-transparent">
         <div className="flex flex-wrap items-center gap-3 mb-2">
           <span className="px-2.5 py-1 rounded-md bg-rose-600 text-white text-xs font-bold flex items-center gap-1">
             <Siren className="w-3.5 h-3.5" />{l3.levelLabel}風險
@@ -121,7 +121,7 @@ export default function AirportDashboard({ scenario }) {
                       <div className="text-xs text-slate-200 truncate">{e.name}</div>
                       <div className="text-[11px] text-slate-500 truncate">{e.region}</div>
                     </div>
-                    <span className={`px-1.5 py-0.5 rounded text-[11px] font-semibold tabular-nums ${lv.badge}`}>{e.score.toFixed(1)}</span>
+                    <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-semibold tabular-nums ${lv.badge}`}>{e.score.toFixed(1)}</span>
                   </div>
                 );
               })}
@@ -196,7 +196,7 @@ function FlightGroup({ title, icon: Icon, flights, currentId }) {
                 {f.dest}
                 {f.note && <span className="text-amber-300/90"> · {f.note}</span>}
               </span>
-              <span className={`px-1.5 py-0.5 rounded border text-[10px] shrink-0 ${lv.cls}`}>{lv.label}</span>
+              <span className={`px-1.5 py-0.5 rounded-sm border text-[10px] shrink-0 ${lv.cls}`}>{lv.label}</span>
               {f.tag && <span className="text-[11px] text-amber-300/90 shrink-0 hidden md:inline">{f.tag}</span>}
               <span className="font-mono text-[11px] text-slate-500 w-9 text-right shrink-0">{f.gate}</span>
             </motion.div>

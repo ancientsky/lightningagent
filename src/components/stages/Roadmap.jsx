@@ -110,7 +110,7 @@ export default function RoadmapView() {
       </Card>
 
       {/* Vision statement */}
-      <div className="text-center px-4 py-8 rounded-2xl bg-gradient-to-b from-paper-50 to-paper-100 border border-paper-300">
+      <div className="text-center px-4 py-8 rounded-2xl bg-linear-to-b from-paper-50 to-paper-100 border border-paper-300">
         <div className="text-3xl font-serif font-semibold text-stone-900 mb-3">從「公文旅行」到「即時訊息流」</div>
         <p className="text-stone-500 text-sm max-w-md mx-auto">
           90 天內，讓台灣國際疫情情資系統跟上 AI Agent 時代——不是換掉人，是讓人做更有價值的決策。
