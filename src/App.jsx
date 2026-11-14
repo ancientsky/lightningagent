@@ -95,7 +95,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-paper-50">
       {/* ── Header ── */}
-      <header className="sticky top-0 z-30 bg-paper-50/90 backdrop-blur border-b border-paper-300 shadow-soft">
+      <header className="sticky top-0 z-30 bg-paper-50/90 backdrop-blur-sm border-b border-paper-300 shadow-soft">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
           <div className="flex items-center gap-2 shrink-0">
             <div className="w-8 h-8 rounded-xl bg-clay-600 flex items-center justify-center shadow-soft">

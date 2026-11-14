@@ -37,15 +37,15 @@ export default function ExecutiveBriefing({ scenario, status }) {
           <div className="flex items-center gap-1.5 text-[11px] text-stone-500 mb-2">
             <Bell className="w-3.5 h-3.5" />手機推播 (lock screen) · <span className="text-rose-600 font-medium">強制顯示</span>
           </div>
-          <div className="mx-auto max-w-[280px] rounded-[2rem] bg-stone-900 border-[6px] border-stone-800 shadow-lift overflow-hidden">
+          <div className="mx-auto max-w-[280px] rounded-4xl bg-stone-900 border-[6px] border-stone-800 shadow-lift overflow-hidden">
             <div className="flex items-center justify-between px-5 pt-3 pb-1 text-[10px] text-stone-300 font-mono">
               <span>{hmStr}</span>
               <span className="flex items-center gap-1">
                 <span className="flex gap-0.5 items-end">
-                  {[2, 3, 4, 5].map((h) => <span key={h} className="w-0.5 bg-stone-300 rounded-sm" style={{ height: h }} />)}
+                  {[2, 3, 4, 5].map((h) => <span key={h} className="w-0.5 bg-stone-300 rounded-xs" style={{ height: h }} />)}
                 </span>
                 5G
-                <span className="ml-1 inline-block w-4 h-2 border border-stone-300 rounded-sm relative"><span className="absolute inset-0.5 bg-stone-300 rounded-[1px]" /></span>
+                <span className="ml-1 inline-block w-4 h-2 border border-stone-300 rounded-xs relative"><span className="absolute inset-0.5 bg-stone-300 rounded-[1px]" /></span>
               </span>
             </div>
             <div className="text-center pt-4 pb-5 text-stone-100">
@@ -171,6 +171,6 @@ export default function ExecutiveBriefing({ scenario, status }) {
 const HeaderRow = ({ k, v }) => (
   <div className="flex gap-2">
     <span className="text-stone-400 w-12 shrink-0">{k}</span>
-    <span className="text-stone-700 flex-1 break-words">{v}</span>
+    <span className="text-stone-700 flex-1 wrap-break-word">{v}</span>
   </div>
 );
